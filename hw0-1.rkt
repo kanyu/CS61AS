@@ -40,11 +40,20 @@ This is a comment that spans multiple lines.
   (+ (square x) (square y)))
 
 ;; Exercise 2a - Define can-drive
-
+(define (can-drive age)
+  (if (< age 16)
+    '(Not yet)
+    '(Good to go)))
 
 
 ;; Exercise 2b - Define fizzbuzz
-
+(define (divisible? big small)
+  (= (remainder big small) 0))
+(define (fizzbuzz n)
+  (cond ((divisible? n 15) 'fizzbuzz)
+        ((divisible? n 3) 'fizz)
+        ((divisible? n 5) 'buzz)
+        (else n)))
 
 ;; Exercise 3 - Why did the Walrus cross the Serengeti?
 
@@ -57,6 +66,5 @@ Your answer here
 ;; Exercise 4 - new-if vs if
 
 #|
-Your answer here
-
+Racket/Scheme evaluates all the arguments first, which fails
 |#
