@@ -127,77 +127,79 @@ Type of value returned by g: #<procedure>
 ; SICP 1.31a
 
 (define (product term a next b)
-  ; Your code here
-  (error "Not yet implemented")
-)
+ (if (> a b)
+   1
+   (* (term a)
+      (product term (next a) next b))))
+
+(define (factorial x)
+   (product identity 1 inc x))
 
 (define (estimate-pi)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (define (pi-estimater n)
+   (define (term x)
+      (/ (* 4.0 (square x))
+         (- (* 4.0 (square x)) 1)))
+   (* 2.0 (product term 1 inc n)))
+  (pi-estimater 1000))
 
 ; SICP 1.32a
 
 ;; This is called my-accumulate so it doesn't conflict with Simply
 ;; Scheme's accumulate.
 (define (my-accumulate combiner null-value term a next b)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (if (> a b)
+    null-value
+    (combiner (term a)
+              (my-accumulate combiner null-value term (next a) next b))))
 
 ;; Write sum in terms of my-accumulate:
 (define (sum-accum term a next b)
-  ; Your code here
-  (error "Note yet implemented")
-)
+  (my-accumulate + 0 term a next b))
 
 ;; Write product in terms of my-accumulate:
 (define (product-accum term a next b)
-  ; Your code here
-  (error "Note yet implemented")
-)
+  (my-accumulate * 1 term a next b))
 
 
 ; SICP 1.33
 
 (define (filtered-accumulate combiner null-value term a next b pred)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (if (> a b)
+    null-value
+    (if (pred a)
+      (combiner (term a)
+                (filtered-accumulate combiner null-value term (next a) next b pred))
+      (filtered-accumulate combiner null-value term (next a) next b pred))))
 
 (define (sum-sq-prime a b)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (filtered-accumulate + 0 square a inc b prime?))
 
 (define (rel-prime? x y)
   (= (gcd x y) 1))
 
 (define (prod-of-some-numbers n)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (define (my-rel-prime? i)
+    (rel-prime? i n))
+  (filtered-accumulate * 1 identity 1 inc (- n 1 ) my-rel-prime?))
 
 ; SICP 1.40 - Define cubic
 
 (define (cubic a b c)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (lambda (x)
+    (+ (* x x x) (* a x x) (* b x) c)))
 
 ; SICP 1.41 - Define double
 
 (define (double proc)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (lambda (x) (proc (proc x))))
 
 ; SICP 1.43 - Define repeated
 
 (define (my-repeated proc n)
-  ; Your code here
-  (error "Not yet implemented")
-)
+  (if (= n 1)
+    proc
+    (compose proc (my-repeated proc (- n 1)))))
 
 ; Exercise 9 - Define my-every
 
