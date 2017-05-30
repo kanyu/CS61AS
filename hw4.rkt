@@ -22,26 +22,28 @@
 (define (make-interval a b) (cons a b))
 
 (define (upper-bound interval)
-  (error "Not yet implemented"))
+  (cdr interval))
 
 (define (lower-bound interval)
-  (error "Not yet implemented"))
+  (car interval))
 
 ; SICP 2.8 - Define sub-interval
 
 (define (sub-interval x y)
-  (error "Not yet implemented"))
+  (make-interval (- (lower-bound x) (upper-bound y))
+                 (- (upper-bound x) (lower-bound y))))
 
 ; SICP 2.10 - Modify div-interval
 
 (define (div-interval x y)
-  (mul-interval x 
-                (make-interval (/ 1 (upper-bound y))
-                               (/ 1 (lower-bound y)))))
+  (if (>= 0 (* (lower-bound y) (upper-bound y)))
+    (error "Division by 0") 
+    (mul-interval x 
+                  (make-interval (/ 1 (upper-bound y))
+                                 (/ 1 (lower-bound y))))))
 
 
 ;SICP 2.12 - Define make-center-percent and percent
-
 (define (make-center-width c w)
   (make-interval (- c w) (+ c w)))
 (define (center i)
@@ -49,29 +51,53 @@
 (define (width i)
   (/ (- (upper-bound i) (lower-bound i)) 2))
 
-(define (make-center-percent c tol)
-  (error "Not yet implemented"))
+(define (make-center-percent c pct) 
+ (let ((width (* c (/ pct 100.0)))) 
+   (make-interval (- c width) (+ c width)))) 
+  
+(define (percent i) 
+ (let ((center (/ (+ (upper-bound i) (lower-bound i)) 2.0)) 
+       (width (/ (- (upper-bound i) (lower-bound i)) 2.0))) 
+   (* (/ width center) 100))) 
 
 ; SICP 2.17 - Define last-pair
 
 (define (last-pair lst)
-  (error "Not yet implemented"))
+  (if (null? (cdr lst))
+    lst
+    (last-pair (cdr lst))))
 
 ; SICP 2.20 - Define same-parity
-
-(define (same-parity your-args-here)
-  (error "Not yet implemented. Do not forget to edit the arguments of this procedure as well."))
+(define (same-parity first . rest) 
+ (define (same-parity-iter source dist remainder-val) 
+   (if (null? source) 
+       dist 
+       (same-parity-iter (cdr source) 
+                         (if (= (remainder (car source) 2) remainder-val) 
+                             (append dist (list (car source))) 
+                             dist) 
+                         remainder-val))) 
+ (same-parity-iter rest (list first) (remainder first 2))) 
 
 ; SICP 2.22 - Write your explanation in the comment block:
 
 #|
-Your explanation here
+1. He conses the square then the item, leaving the new items in the front
+2. He is consing a list (answer)
 |#
 
 ; Exercise 2 - Define my-substitute
 
+; (define (flat-substitute lst old new)
+;   (cond ((null? lst) '())
+;         ((equal? (car lst) old) (cons new (flat-substitute (cdr lst) old new)))
+;         (else (cons (car lst) (flat-substitute (cdr lst) old new)))))
+
 (define (substitute lst old new)
-  (error "Not yet implemented"))
+  (cond ((null? lst) '())
+        ((list? (car lst)) (cons (substitute (car lst) old new) (substitute (cdr lst) old new)))
+        ((equal? (car lst) old) (cons new (substitute (cdr lst) old new)))
+        (else (cons (car lst) (substitute (cdr lst) old new)))))
 
 ; Exercise 3 - Define my-substitute2
 
