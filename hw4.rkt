@@ -88,11 +88,6 @@
 
 ; Exercise 2 - Define my-substitute
 
-; (define (flat-substitute lst old new)
-;   (cond ((null? lst) '())
-;         ((equal? (car lst) old) (cons new (flat-substitute (cdr lst) old new)))
-;         (else (cons (car lst) (flat-substitute (cdr lst) old new)))))
-
 (define (substitute lst old new)
   (cond ((null? lst) '())
         ((list? (car lst)) (cons (substitute (car lst) old new) (substitute (cdr lst) old new)))
