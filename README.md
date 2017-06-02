@@ -1,5 +1,5 @@
 # CS61AS
-My attempt at many of the homework problems and projects from Berkeley's CS 61AS, which is all available online.
+My attempt at some of the homework problems and projects from Berkeley's CS 61AS, which is all available online.
 
 Course website: http://berkeley-cs61as.github.io/
 
